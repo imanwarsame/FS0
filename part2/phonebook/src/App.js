@@ -1,20 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import Filter from './components/Filter';
 import People from "./components/People";
 import PersonForm from './components/PersonForm';
 
 const App = () => {
   //States for array of people in phonebook
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '0118 999 881 999 119 725 3', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ])
-
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('Add name here...')
   const [newNumber, setNewNumber] = useState('Add number here...')
   const [filterName, setFilterName] = useState('')
+
+  //Use hook effect to GET data from server
+  const hook = () => {
+	  console.log('effect')
+	  axios
+	    .get('http://localhost:3001/persons')
+	    .then(response => {
+	      console.log('promise fulfilled')
+	      setPersons(response.data)
+	    })
+	}
+	
+	useEffect(hook, [])
+  console.log('render', persons.length, 'persons')
+
 
   //Filter based on filter name. When filtername gets updated so will this variable
   const peopleToShow = persons.filter(value => value.name.toLowerCase().includes(filterName))
