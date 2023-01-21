@@ -1,10 +1,10 @@
 import Person from "./Person";
 
-const People = ({persons}) => {
+const People = ({persons, deleteEventHandler}) => {
   return (
     <div>
       <ul>
-        {persons.map(value => <Person key={value.id} person={value}/>)}
+        {persons.map(value => <Person key={value.id} person={value} deleteEventHandler={deleteEventHandler}/>)}
       </ul>
     </div>
   )

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter';
 import People from "./components/People";
 import PersonForm from './components/PersonForm';
+import NumbersService from "./services/numbers";
 
 const App = () => {
   //States for array of people in phonebook
@@ -14,12 +14,12 @@ const App = () => {
   //Use hook effect to GET data from server
   const hook = () => {
 	  console.log('effect')
-	  axios
-	    .get('http://localhost:3001/persons')
-	    .then(response => {
-	      console.log('promise fulfilled')
-	      setPersons(response.data)
-	    })
+
+    NumbersService.getAll()
+    .then(response => {
+      console.log('promise fulfilled')
+      setPersons(response.data)
+    })
 	}
 	
 	useEffect(hook, [])
@@ -40,14 +40,33 @@ const App = () => {
     } else {
       //New person object to add
       const personObject = {
-        id: persons.length + 1,
         name: newName,
         number: newNumber
       }
 
-      setPersons(persons.concat(personObject)) //Concat new person to persons array and update state
-      setNewName('') //Reset input box
-      setNewNumber('') //Reset input box
+      NumbersService.create(personObject)
+      .then(response =>{
+        //Concat new person that was just added to the db to persons array and update state
+        setPersons(persons.concat(response.data))
+        setNewName('') //Reset input box
+        setNewNumber('') //Reset input box
+      })
+
+    }
+  }
+
+  //Event handler to delete person
+  const delPerson = (index) => {
+    console.log(persons.find(value => value.id === index))
+
+    const personName = persons.find(value => value.id === index).name
+    if (window.confirm('Are you sure you want to delete ' + personName + '?')) {
+      NumbersService.deleteOne(index)
+      .then(() => {
+        //Update persons list
+        setPersons(persons.filter(i => i.id !== index))
+        console.log(personName + ' deleted')
+      })
     }
   }
 
@@ -74,7 +93,7 @@ const App = () => {
       <PersonForm newName={newName} newNumber={newNumber} addPersonHandler={addPerson} nameChangeHandler={handleNameChange} numberChangeHandler={handleNumberChange}/>
       
       <h3>Numbers</h3>
-      <People persons={peopleToShow}/>
+      <People persons={peopleToShow} deleteEventHandler={delPerson}/>
     </div>
   )
 }
