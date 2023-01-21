@@ -35,8 +35,20 @@ const App = () => {
 
     //Check if person hasn't already been added
     if (persons.filter(value => value.name === newName).length > 0) {
-      alert(`${newName} has already been added to the phonebook`)
-      setNewName('') //Reset input box
+      //Check if user wants to update the phone number
+      if (window.confirm(`${newName} has already been added to the phonebook, would you like to replace the old number?`)) {
+        const personToEdit = persons.find(value => value.name === newName)
+        const changedPerson = { ...personToEdit, number: newNumber }
+
+        NumbersService.update(personToEdit.id, changedPerson).then(response =>{
+          //Update state to new array using map. If they do not have the id of the person to edit
+          //then return themselves, otherwise replace the data
+          setPersons(persons.map(n => n.id !== personToEdit.id ? n : response.data))
+
+          setNewName('') //Reset input box
+          setNewNumber('') //Reset input box
+        })
+      }
     } else {
       //New person object to add
       const personObject = {
