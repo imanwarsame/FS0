@@ -23,11 +23,11 @@ const App = () => {
   console.log('render', countries.length, 'countries')
 
 
-  //Filter based on filter name. When filtername gets updated so will this variable
+  //Filtered list. When filtername gets updated so will this variable
   const filteredCountries = countries.filter(value => value.name.official.toLowerCase().includes(filterName))
 
-  //Event handler to delete person
-  const showCountryInfo = (index) => {
+  //Event handler to show country information
+  const showCountryInfo = () => {
     console.log('Show country info')
   }
 
