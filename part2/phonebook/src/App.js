@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter';
 import People from "./components/People";
 import PersonForm from './components/PersonForm';
+import Notification from "./components/Notification";
 import NumbersService from "./services/numbers";
 
 const App = () => {
@@ -10,6 +11,8 @@ const App = () => {
   const [newName, setNewName] = useState('Add name here...')
   const [newNumber, setNewNumber] = useState('Add number here...')
   const [filterName, setFilterName] = useState('')
+  const [userNotification, setUserNotification] = useState('some error happened...')
+  const [notificationType, setNotificationType] = useState('notification')
 
   //Use hook effect to GET data from server
   const hook = () => {
@@ -45,6 +48,11 @@ const App = () => {
           //then return themselves, otherwise replace the data
           setPersons(persons.map(n => n.id !== personToEdit.id ? n : response.data))
 
+          setUserNotification(`${newName} has been updated!`) //Success notification
+          setTimeout(() => {
+            setUserNotification(null)
+          }, 5000);
+
           setNewName('') //Reset input box
           setNewNumber('') //Reset input box
         })
@@ -60,6 +68,12 @@ const App = () => {
       .then(response =>{
         //Concat new person that was just added to the db to persons array and update state
         setPersons(persons.concat(response.data))
+
+        setUserNotification(`${response.data.name} has been added to the database!`) //Success notification
+        setTimeout(() => {
+          setUserNotification(null)
+        }, 5000);
+
         setNewName('') //Reset input box
         setNewNumber('') //Reset input box
       })
@@ -72,12 +86,24 @@ const App = () => {
     console.log(persons.find(value => value.id === index))
 
     const personName = persons.find(value => value.id === index).name
-    if (window.confirm('Are you sure you want to delete ' + personName + '?')) {
+    if (window.confirm(`Are you sure you want to delete '${personName}'?`)) {
       NumbersService.deleteOne(index)
       .then(() => {
         //Update persons list
         setPersons(persons.filter(i => i.id !== index))
-        console.log(personName + ' deleted')
+
+        setUserNotification(`${personName} has been deleted!`) //Success notification
+        setTimeout(() => {
+          setUserNotification(null)
+        }, 5000);
+      })
+      .catch(() => {
+        setNotificationType('errorMsg')
+        setUserNotification(`Person does not exist!`) //Error notification
+        setTimeout(() => {
+          setUserNotification(null)
+          setNotificationType('notification')
+        }, 5000);
       })
     }
   }
@@ -99,6 +125,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={userNotification} notificationType={notificationType}/>
       <Filter filterName={filterName} eventHandler={handleFilterChange}/>
 
       <h3>Add new entry</h3>
