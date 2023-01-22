@@ -4,9 +4,9 @@ const Country = ({country, showInfoHandler, showExtendedInfo = false}) => {
   if (showExtendedInfo) {
     //Get array of languages as it is currently an object
     const langArray = Object.keys(country.languages).map((key) => [country.languages[key]]);
-    console.log(country.id);
+
     return (
-      <div key={country.id}>
+      <div key={v4()}>
         <h2>{country.name.official}</h2>
         <p>Capital: {country.capital}</p>
         <p>Area: {country.area} m2</p>
@@ -20,7 +20,7 @@ const Country = ({country, showInfoHandler, showExtendedInfo = false}) => {
   } else {
     return (
       <div key={country.id}>
-        {country.name.official} <button onClick={() => showInfoHandler(country.id)}>Show</button>
+        {country.name.official} <button onClick={() => showInfoHandler(country)}>Show</button>
       </div>
     )
   }

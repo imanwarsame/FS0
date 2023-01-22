@@ -1,10 +1,10 @@
 import Country from "./Country";
 import { v4 } from 'uuid'
 
-const Countries = ({countries, showInfoHandler}) => {
+const Countries = ({countries, showInfoHandler, showExtendedInfo}) => {
   if (countries.length === 1) {
     const nation = countries[0]
-    console.log(countries.findIndex(i => i.name.official === nation.name.official));
+
     return (
       <div>
         <Country key={v4()} country={nation} showInfoHandler={showInfoHandler} showExtendedInfo={true}/>
@@ -14,7 +14,7 @@ const Countries = ({countries, showInfoHandler}) => {
     return (
       <div>
         <ul>
-          {countries.map(value => <Country key={v4()} country={value} showInfoHandler={showInfoHandler}/>)}
+          {countries.map(value => <Country key={v4()} country={value} showInfoHandler={showInfoHandler} showExtendedInfo={showExtendedInfo}/>)}
         </ul>
       </div>
     )

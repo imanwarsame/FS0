@@ -6,7 +6,9 @@ import CountriesService from "./services/countries";
 const App = () => {
   //Set up react hooks
   const [countries, setCountries] = useState([])
+  const [filteredCountries, setfilteredCountries] = useState([])
   const [filterName, setFilterName] = useState('')
+  const [showMoreInfo, setMoreInfo] = useState(false)
 
   //Use hook effect to GET data from server
   const hook = () => {
@@ -24,16 +26,20 @@ const App = () => {
 
 
   //Filtered list. When filtername gets updated so will this variable
-  const filteredCountries = countries.filter(value => value.name.official.toLowerCase().includes(filterName))
+  // let filteredCountries = countries.filter(value => value.name.official.toLowerCase().includes(filterName))
 
-  //Event handler to show country information
-  const showCountryInfo = () => {
+  //Event handler to show single country information
+  const showCountryInfo = (country) => {
     console.log('Show country info')
+    setfilteredCountries (countries.filter(value => value === country))
+    setMoreInfo(true)
   }
 
   //Event handlers for input text changing
   const handleFilterChange = (event) => {
     setFilterName(event.target.value) //sets the filter state
+    setfilteredCountries(countries.filter(value => value.name.official.toLowerCase().includes(filterName)))
+    setMoreInfo(false)
   }
 
 
@@ -41,7 +47,7 @@ const App = () => {
     <div>
       <Filter filterName={filterName} eventHandler={handleFilterChange}/>
 
-      <Countries countries={filteredCountries} showInfoHandler={showCountryInfo}/>
+      <Countries countries={filteredCountries} showInfoHandler={showCountryInfo} showExtendedInfo={showMoreInfo}/>
     </div>
   )
 }
