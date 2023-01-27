@@ -8,8 +8,8 @@ import NumbersService from "./services/numbers";
 const App = () => {
   //States for array of people in phonebook
   const [persons, setPersons] = useState([])
-  const [newName, setNewName] = useState('Add name here...')
-  const [newNumber, setNewNumber] = useState('Add number here...')
+  const [newName, setNewName] = useState(null)
+  const [newNumber, setNewNumber] = useState(null)
   const [filterName, setFilterName] = useState('')
   const [userNotification, setUserNotification] = useState(null)
   const [notificationType, setNotificationType] = useState('notification')
