@@ -30,7 +30,7 @@ const App = () => {
 
 
   //Filter based on filter name. When filtername gets updated so will this variable
-  const peopleToShow = persons.filter(value => value.name.toLowerCase().includes(filterName))
+  const peopleToShow = persons.filter(value => value.name.toLowerCase().includes(filterName.toLowerCase()))
 
   //Event handler to add a new person
   const addPerson = (event) => {
