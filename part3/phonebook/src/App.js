@@ -8,8 +8,8 @@ import NumbersService from "./services/numbers";
 const App = () => {
   //States for array of people in phonebook
   const [persons, setPersons] = useState([])
-  const [newName, setNewName] = useState(null)
-  const [newNumber, setNewNumber] = useState(null)
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
   const [userNotification, setUserNotification] = useState(null)
   const [notificationType, setNotificationType] = useState('notification')
@@ -56,6 +56,15 @@ const App = () => {
           setNewName('') //Reset input box
           setNewNumber('') //Reset input box
         })
+        .catch(error => {
+          console.log(error.response.data.error)
+          setNotificationType('errorMsg')
+          setUserNotification(error.response.data.error) //Error notification
+          setTimeout(() => {
+            setUserNotification(null)
+            setNotificationType('notification')
+          }, 5000);
+        })
       }
     } else {
       //New person object to add
@@ -77,7 +86,15 @@ const App = () => {
         setNewName('') //Reset input box
         setNewNumber('') //Reset input box
       })
-
+      .catch(error => {
+        console.log(error.response.data.error)
+        setNotificationType('errorMsg')
+        setUserNotification(error.response.data.error) //Error notification
+        setTimeout(() => {
+          setUserNotification(null)
+          setNotificationType('notification')
+        }, 5000);
+      })
     }
   }
 
