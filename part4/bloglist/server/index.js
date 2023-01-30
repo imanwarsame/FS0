@@ -1,3 +1,7 @@
+// const app = require('./app') // the actual Express application
+const config = require('./utils/config')
+const { info, error } = require('./utils/logger')
+
 require('dotenv').config();
 const http = require('http')
 const express = require('express')
@@ -50,5 +54,5 @@ app.post('/api/blogs', (request, response) => {
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  info(`Server running on port ${PORT}`)
 })
