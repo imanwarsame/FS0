@@ -9,5 +9,11 @@ const totalLikes = (blogs) => {
 		: blogs.map(blog => blog.likes).reduce((prev, next) => prev + next);
 };
 
+const favouriteBlog = (blogs) => {
+	return blogs.length === 0
+		? 0
+		: blogs.reduce((max, blog) => max.likes > blog.likes ? max : blog);
+};
 
-module.exports = { dummy, totalLikes };
+
+module.exports = { dummy, totalLikes, favouriteBlog };
