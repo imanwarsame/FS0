@@ -41,6 +41,32 @@ test('id property exists', async () => {
 	});
 });
 
+/* This is a test that checks that a valid blog can be added. */
+test('a valid blog can be added ', async () => {
+	const newBlog = {
+		_id: '5a422b3a1b54a676234d17f9',
+		title: 'Canonical string reduction',
+		author: 'Edsger W. Dijkstra',
+		url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+		likes: 12,
+		__v: 0
+	};
+
+	await api
+		.post('/api/blogs')
+		.send(newBlog)
+		.expect(201)
+		.expect('Content-Type', /application\/json/);
+
+	const blogsAtEnd = await blogsInDB();
+	expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1);
+
+	const contents = blogsAtEnd.map(n => n.title);
+	expect(contents).toContain(
+		'Canonical string reduction'
+	);
+});
+
 
 /* This is a test that checks that all blogs are returned. */
 test('all blogs are returned', async () => {
