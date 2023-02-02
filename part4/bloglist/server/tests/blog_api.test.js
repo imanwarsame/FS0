@@ -15,8 +15,6 @@ beforeEach(async () => {
 
 
 
-
-
 describe('when there are initially some blogs saved', () => {
 	/* This is a test that checks that the response is in JSON format. */
 	test('blogs are returned as json', async () => {
@@ -56,7 +54,6 @@ describe('when there are initially some blogs saved', () => {
 
 
 
-
 describe('when viewing a specific blog', () => {
 	/* This is a test that checks that a valid blog can be added. */
 	test('succeeds with a valid id', async () => {
@@ -90,10 +87,6 @@ describe('when viewing a specific blog', () => {
 			.expect(400);
 	});
 });
-
-
-
-
 
 
 
@@ -159,7 +152,6 @@ describe('addition of a new blog', () => {
 
 
 
-
 describe('deletion of a blog', () => {
 	/* This is a test that checks that a valid blog can be deleted. */
 	test('succeeds with status code 204 if id is valid', async () => {
@@ -181,50 +173,27 @@ describe('deletion of a blog', () => {
 });
 
 
+
+
+
 describe('updating a blog', () => {
-	/* This is a test that checks that a valid blog can be deleted. */
-	test('succeeds with status code 204 if id is valid', async () => {
+	/* This is a test that checks whether a valid blog can be updated. */
+	test('blog can be updated', async () => {
 		const blogsAtStart = await blogsInDB();
-		const blogToDelete = blogsAtStart[0];
+		const blogToUpdate = blogsAtStart[0];
+		blogToUpdate.title = 'The new title';
 
 		await api
-			.delete(`/api/blogs/${blogToDelete.id}`)
-			.expect(204);
+			.put(`/api/blogs/${blogToUpdate.id}`)
+			.send(blogToUpdate)
+			.expect(200);
 
 		const blogsAtEnd = await blogsInDB();
 
-		expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1);
-
 		const contents = blogsAtEnd.map(r => r.title);
-
-		expect(contents).not.toContain(blogToDelete.title);
+		expect(contents).toContain(blogToUpdate.title);
 	});
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
