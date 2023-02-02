@@ -20,7 +20,14 @@ const initialBlogs = [
 ];
 
 const nonExistingId = async () => {
-	const blog = new Blog({ title : 'willremovethissoon' });
+	const blog = new Blog ({
+		_id: '5a422b3a1b54a676234d17f9',
+		title: 'Will remove soon',
+		author: 'Edsger W. Dijkstra',
+		url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+		likes: 12,
+		__v: 0
+	});
 	await blog.save();
 	await blog.remove();
 
