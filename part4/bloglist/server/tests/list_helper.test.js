@@ -153,8 +153,6 @@ describe('favourite blogs', () => {
 		};
 		const result = listHelper.favouriteBlog(blogs);
 
-		console.log(topBlog);
-		console.log(result);
 		expect(result).toEqual(topBlog);
 	});
 });
