@@ -78,8 +78,20 @@ test('if likes are missing it will default to zero', async () => {
 	};
 
 	const response = await api.post('/api/blogs').send(newBlog);
-	console.log(response);
 	expect(response.body.likes).toBe(0);
+});
+
+test('if title or url is missing it will return code 400', async () => {
+	let newBlog = {
+		_id: '5a422b3a1b54a676234d17f9',
+		likes: 12,
+		__v: 0
+	};
+
+	await api.post('/api/blogs').send(newBlog).expect(400);
+
+	const blogsAtEnd = await blogsInDB();
+	expect(blogsAtEnd).toHaveLength(initialBlogs.length);
 });
 
 

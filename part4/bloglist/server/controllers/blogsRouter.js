@@ -26,8 +26,12 @@ blogsRouter.post('/', async (request, response) => {
 		likes: body.likes || 0
 	});
 
-	const savedBlog = await blog.save();
-	response.status(201).json(savedBlog);
+	if (blog.title === undefined || blog.url === undefined) {
+		response.status(400).send({ error: 'Title or URL do not exist' });
+	} else {
+		const savedBlog = await blog.save();
+		response.status(201).json(savedBlog);
+	}
 });
 
 blogsRouter.delete('/:id', async (request, response) => {
