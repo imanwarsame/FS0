@@ -10,7 +10,11 @@ const blogSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	likes: Number
+	likes: Number,
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
+	},
 });
 
 //Modify toJSON method to ensure id is a string and delete _id and __v
@@ -22,4 +26,6 @@ blogSchema.set('toJSON', {
 	}
 });
 
-module.exports = mongoose.model('Blog', blogSchema);
+const Blog = mongoose.model('Blog', blogSchema);
+
+module.exports = Blog;

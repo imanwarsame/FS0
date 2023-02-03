@@ -7,11 +7,13 @@ const middleware = require('./utils/middleware');
 const logger = require('./utils/logger');
 const mongoose = require('mongoose');
 const blogsRouter = require('./controllers/blogsRouter');
+const usersRouter = require('./controllers/usersRouter');
 
 mongoose.set('strictQuery', false);
 
 logger.info('connecting to', config.MONGODB_URI);
 
+/* Connecting to the MongoDB database. */
 mongoose.connect(config.MONGODB_URI)
 	.then(() => {
 		logger.info('connected to MongoDB');
@@ -25,7 +27,9 @@ app.use(express.static('build'));
 app.use(express.json());
 app.use(middleware.requestLogger);
 
+/* Telling the app to use the routers for blogs and users. */
 app.use('/api/blogs', blogsRouter);
+app.use('/api/users', usersRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
