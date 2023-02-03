@@ -8,6 +8,7 @@ const logger = require('./utils/logger');
 const mongoose = require('mongoose');
 const blogsRouter = require('./controllers/blogsRouter');
 const usersRouter = require('./controllers/usersRouter');
+const loginRouter = require('./controllers/login');
 
 mongoose.set('strictQuery', false);
 
@@ -27,7 +28,8 @@ app.use(express.static('build'));
 app.use(express.json());
 app.use(middleware.requestLogger);
 
-/* Telling the app to use the routers for blogs and users. */
+/* Telling the app to use the routers for login, blogs and users. */
+app.use('/api/login', loginRouter);
 app.use('/api/blogs', blogsRouter);
 app.use('/api/users', usersRouter);
 
