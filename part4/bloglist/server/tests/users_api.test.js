@@ -70,6 +70,49 @@ describe('when there is some users in the db', () => {
 		const usersAtEnd = await usersInDB();
 		expect(usersAtEnd).toEqual(usersAtStart);
 	});
+
+	test('creation fails if password not entered', async () => {
+		const usersAtStart = await usersInDB();
+
+		const newUser = {
+			username: 'Bobby',
+			name: 'Bob45',
+		};
+
+		await api.post('/api/users').send(newUser).expect(400);
+
+		const usersAtEnd = await usersInDB();
+		expect(usersAtEnd).toEqual(usersAtStart);
+	});
+
+	test('creation fails if username not entered', async () => {
+		const usersAtStart = await usersInDB();
+
+		const newUser = {
+			name: 'Bob45',
+			password: 'as',
+		};
+
+		await api.post('/api/users').send(newUser).expect(400);
+
+		const usersAtEnd = await usersInDB();
+		expect(usersAtEnd).toEqual(usersAtStart);
+	});
+
+	test('creation fails with proper status code if password is less than 3 characters', async () => {
+		const usersAtStart = await usersInDB();
+
+		const newUser = {
+			username: 'Bobby',
+			name: 'Bob45',
+			password: 'as',
+		};
+
+		await api.post('/api/users').send(newUser).expect(400);
+
+		const usersAtEnd = await usersInDB();
+		expect(usersAtEnd).toEqual(usersAtStart);
+	});
 });
 
 
