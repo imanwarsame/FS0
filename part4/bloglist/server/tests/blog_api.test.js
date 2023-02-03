@@ -1,14 +1,23 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const supertest = require('supertest');
 const app = require('../app');
 const { initialBlogs, nonExistingId, blogsInDB } = require('./test_helper');
 const api = supertest(app);
 
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
 beforeEach(async () => {
 	await Blog.deleteMany({});
 	await Blog.insertMany(initialBlogs);
+
+	await User.deleteMany({});
+
+	const passwordHash = await bcrypt.hash('sekret', 10);
+	const user = new User({ username: 'root', passwordHash });
+
+	await user.save();
 });
 
 
@@ -95,6 +104,14 @@ describe('when viewing a specific blog', () => {
 describe('addition of a new blog', () => {
 	/* This is a test that checks that a valid blog can be added. */
 	test('a valid blog can be added', async () => {
+		const newUser = {
+			username: 'root',
+			password: 'sekret',
+		};
+
+		const loginResult = await api.post('/api/login').send(newUser);
+		const token = loginResult.body.token;
+
 		const newBlog = {
 			_id: '5a422b3a1b54a676234d17f9',
 			title: 'Canonical string reduction',
@@ -106,6 +123,7 @@ describe('addition of a new blog', () => {
 
 		await api
 			.post('/api/blogs')
+			.set('Authorization', `bearer ${token}`)
 			.send(newBlog)
 			.expect(201)
 			.expect('Content-Type', /application\/json/);
@@ -121,6 +139,15 @@ describe('addition of a new blog', () => {
 
 	/* This is a test that checks that if likes are missing it will default to zero. */
 	test('if likes are missing it will default to zero', async () => {
+		const newUser = {
+			username: 'root',
+			password: 'sekret',
+		};
+
+		const loginResult = await api.post('/api/login').send(newUser);
+		const token = loginResult.body.token;
+
+
 		const newBlog = {
 			_id: '5a422b3a1b54a676234d17f9',
 			title: 'Canonical string reduction',
@@ -129,7 +156,7 @@ describe('addition of a new blog', () => {
 			__v: 0
 		};
 
-		const response = await api.post('/api/blogs').send(newBlog);
+		const response = await api.post('/api/blogs').set('Authorization', `bearer ${token}`).send(newBlog);
 		expect(response.body.likes).toBe(0);
 	});
 
