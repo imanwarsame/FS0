@@ -58,6 +58,12 @@ const App = () => {
     }
   };
 
+  //Event handler to clear local data and reset state
+  const logOut = (event) => {
+    window.localStorage.clear();
+    setUser(null);
+  };
+
 
 
   const loginForm = () => (
@@ -108,8 +114,11 @@ const App = () => {
       <Notification message={userNotification} notificationType={notificationType}/>
 
       {!user && loginForm()} 
-      {user && <div>
-        <p>{user.name} logged in</p>
+      {user && 
+        <div>
+          <div>
+            {user.name} logged in <button onClick={() => logOut()}>log out</button>
+          </div>
           {blogsList()}
         </div>
       }
