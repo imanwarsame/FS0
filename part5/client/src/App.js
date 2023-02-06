@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
-import Notification from "./components/Notification";
+import Notification from './components/Notification';
 
 
 const App = () => {
@@ -20,6 +20,17 @@ const App = () => {
   }, []);
 
 
+  //Check if user is logged in when component loads for the first time
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
+  //Login event handler
   const handleLogin = async (event) => {
     event.preventDefault()
     
@@ -27,9 +38,15 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-      setUser(user);
-      setUsername('');
+      setUser(user); //Set user state
+      setUsername(''); //Reset username and password fields
       setPassword('');
+      if (user) {
+        //Save user to local storage
+        window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
+        console.log('user has been saved');
+      }
+
     } catch (error) {
       console.log(error.response.data.error)
       setNotificationType('errorMsg')
@@ -76,6 +93,14 @@ const App = () => {
     </div>
   );
 
+  const blogsList = () => (
+    <div>
+      {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} />
+      )}
+    </div>
+  );
+
   return (
     <div>
       <h2>blogs</h2>
@@ -85,13 +110,9 @@ const App = () => {
       {!user && loginForm()} 
       {user && <div>
         <p>{user.name} logged in</p>
-          {blogsForm()}
+          {blogsList()}
         </div>
       }
-
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
     </div>
   );
 }
