@@ -26,7 +26,7 @@ const BlogForm = ({ addBlogHandler }) => {
 
 
 
-    //Event handlers for input text changing
+  //Event handlers for input text changing
   const handleTitleChange = (event) => {
     setNewTitle(event.target.value) //sets the newName state
   }
