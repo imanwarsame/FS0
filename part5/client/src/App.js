@@ -14,9 +14,6 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [newTitle, setNewTitle] = useState('');
-  const [newAuthor, setNewAuthor] = useState('');
-  const [newURL, setNewURL] = useState('');
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -62,16 +59,8 @@ const App = () => {
     }
   };
 
-  const addBlogHandler = async (event) => {
-    event.preventDefault()
-    
+  const addBlogHandler = async (newBlog) => {    
     try {
-      const newBlog = {
-        title: newTitle,
-        author: newAuthor,
-        url: newURL,
-      };
-
       await blogService.create(newBlog);
 
       //Concat new blog that was just added to the db to blogs array and update state
@@ -81,10 +70,6 @@ const App = () => {
       setTimeout(() => {
         setUserNotification(null)
       }, 5000);
-
-      setNewTitle('') //Reset input box
-      setNewAuthor('') //Reset input box
-      setNewURL('') //Reset input box
     } catch (error) {
       console.log(error.response.data.error)
       setNotificationType('errorMsg')
@@ -136,20 +121,6 @@ const App = () => {
       )}
     </div>
   );
-
-
-  //Event handlers for input text changing
-  const handleTitleChange = (event) => {
-    setNewTitle(event.target.value) //sets the newName state
-  }
-
-  const handleAuthorChange = (event) => {
-    setNewAuthor(event.target.value) //sets the newAuthor state
-  }
-
-  const handleURLChange = (event) => {
-    setNewURL(event.target.value) //sets the newURL state
-  }
   
   
 
@@ -167,15 +138,7 @@ const App = () => {
           </div>
 
           <Togglable buttonLabel='New blog'>
-            <BlogForm
-              newTitle={newTitle}
-              newAuthor={newAuthor}
-              newURL={newURL} 
-              addBlogHandler={addBlogHandler} 
-              titleChangeHandler={handleTitleChange} 
-              authorChangeHandler={handleAuthorChange} 
-              URLChangeHandler={handleURLChange}
-            />
+            <BlogForm addBlogHandler={addBlogHandler}/>
           </Togglable>
 
 
