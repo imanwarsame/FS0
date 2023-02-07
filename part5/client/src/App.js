@@ -140,7 +140,9 @@ const App = () => {
 
   const blogsList = () => (
     <div>
-      {blogs.map(blog =>
+      {blogs
+      .sort(({ likes: previousLikes }, { likes: currentLikes }) => currentLikes - previousLikes)
+      .map(blog =>
         <Blog key={blog.id} blog={blog} updateLikesHandler={updateLikesHandler}/>
       )}
     </div>
