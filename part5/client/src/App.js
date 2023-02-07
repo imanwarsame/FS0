@@ -3,7 +3,8 @@ import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import Notification from './components/Notification';
-import BlogForm from './components/BlogForm'
+import BlogForm from './components/BlogForm';
+import Togglable from './components/Togglable';
 
 
 const App = () => {
@@ -164,15 +165,20 @@ const App = () => {
           <div>
             {user.name} logged in <button onClick={() => logOut()}>log out</button>
           </div>
-          <BlogForm
-            newTitle={newTitle}
-            newAuthor={newAuthor}
-            newURL={newURL} 
-            addBlogHandler={addBlogHandler} 
-            titleChangeHandler={handleTitleChange} 
-            authorChangeHandler={handleAuthorChange} 
-            URLChangeHandler={handleURLChange}
-          />
+
+          <Togglable buttonLabel='New note'>
+            <BlogForm
+              newTitle={newTitle}
+              newAuthor={newAuthor}
+              newURL={newURL} 
+              addBlogHandler={addBlogHandler} 
+              titleChangeHandler={handleTitleChange} 
+              authorChangeHandler={handleAuthorChange} 
+              URLChangeHandler={handleURLChange}
+            />
+          </Togglable>
+
+
           {blogsList()}
         </div>
       }
