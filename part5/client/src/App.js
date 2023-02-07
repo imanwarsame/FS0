@@ -61,12 +61,12 @@ const App = () => {
 
   const addBlogHandler = async (newBlog) => {    
     try {
-      await blogService.create(newBlog);
+      const savedBlog = await blogService.create(newBlog);
 
       //Concat new blog that was just added to the db to blogs array and update state
-      setBlogs(blogs.concat(newBlog));
+      setBlogs(blogs.concat({...savedBlog, user }));
 
-      setUserNotification(`A new blog ${newBlog.title} by ${newBlog.author} has been added!`) //Success notification
+      setUserNotification(`A new blog ${savedBlog.title} by ${savedBlog.author} has been added!`) //Success notification
       setTimeout(() => {
         setUserNotification(null)
       }, 5000);
