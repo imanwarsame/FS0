@@ -81,6 +81,30 @@ const App = () => {
     }
   };
 
+
+  const updateLikesHandler = async (newBlog) => {    
+    try {
+      const savedBlog = await blogService.update(newBlog.id ,newBlog);
+
+      //Update state to new array using map. If they do not have the id of
+      //the updated blog then return themselves, otherwise replace the data
+      setBlogs(blogs.map(n => n.id !== savedBlog.id ? n : {...savedBlog, user }))
+
+      setUserNotification(`${savedBlog.title} now has ${savedBlog.likes} likes!`) //Success notification
+      setTimeout(() => {
+        setUserNotification(null)
+      }, 5000);
+    } catch (error) {
+      console.log(error.response.data.error)
+      setNotificationType('errorMsg')
+      setUserNotification(error.response.data.error) //Error notification
+      setTimeout(() => {
+        setUserNotification(null)
+        setNotificationType('notification')
+      }, 5000);
+    }
+  };
+
   //Event handler to clear local data and reset state
   const logOut = (event) => {
     window.localStorage.clear();
@@ -117,7 +141,7 @@ const App = () => {
   const blogsList = () => (
     <div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog}/>
+        <Blog key={blog.id} blog={blog} updateLikesHandler={updateLikesHandler}/>
       )}
     </div>
   );
