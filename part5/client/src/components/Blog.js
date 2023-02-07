@@ -1,10 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const Blog = ({blog, updateLikesHandler}) => {
+const Blog = ({blog, loggedInUser, updateLikesHandler, deleteBlogHandler}) => {
   const [showDetails, setShowDetails] = useState(false);
+  const [sameUser, setSameUser] = useState(true);
 
   const hideWhenDetailsVisible = { display: showDetails ? 'none' : '' }
   const showWhenDetailsVisible = { display: showDetails ? '' : 'none' }
+
+  const deleteButtonVisible = { display: sameUser ? '' : 'none' }
+
+  //Used when component is rendered for the first time
+  useEffect(() => {
+    console.log('Blog user: ' + blog.user.username + ' & logged in user ' + loggedInUser.username);
+    if (blog.user.username === loggedInUser.username) {
+      setSameUser(true);
+    } else {
+      setSameUser(false);
+    }
+  }, [blog.user.username, loggedInUser.username] );
 
   const blogStyle = {
     paddingTop: 10,
@@ -16,9 +29,13 @@ const Blog = ({blog, updateLikesHandler}) => {
 
 
   const updateLikes = () => {
-    const updatedBlog = {...blog, likes: blog.likes+1}
+    const updatedBlog = {...blog, likes: blog.likes+1};
 
     updateLikesHandler(updatedBlog);
+  }
+
+  const deleteBlog = () => {
+    deleteBlogHandler(blog.id);
   }
 
   return (
@@ -34,7 +51,9 @@ const Blog = ({blog, updateLikesHandler}) => {
         <div>
           Likes {blog.likes} <button onClick={updateLikes}>Like</button>
         </div>
-        <div>{blog.user.name}</div>
+        <div>
+          {blog.user.name} <button style={deleteButtonVisible} onClick={deleteBlog}>Delete</button>
+        </div>
       </div>
   </div>
 )};

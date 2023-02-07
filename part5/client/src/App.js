@@ -105,6 +105,36 @@ const App = () => {
     }
   };
 
+
+  //Event handler to delete blog
+  const deleteBlogHandler = async (blogID) => {
+    console.log(blogs.find(value => value.id === blogID))
+
+    const blogToDelete = blogs.find(value => value.id === blogID)
+    if (window.confirm(`Are you sure you want to delete ${blogToDelete.title} by ${blogToDelete.author}?`)) {
+      try {
+        await blogService.deleteOne(blogID);
+  
+        //Update blogs list
+        setBlogs(blogs.filter(i => i.id !== blogID))
+
+        setUserNotification(`${blogToDelete.title} by ${blogToDelete.author} has been deleted!`) //Success notification
+        setTimeout(() => {
+          setUserNotification(null)
+        }, 5000);
+      } catch (error) {
+        console.log(error.response.data.error)
+        setNotificationType('errorMsg')
+        setUserNotification(error.response.data.error) //Error notification
+        setTimeout(() => {
+          setUserNotification(null)
+          setNotificationType('notification')
+        }, 5000);
+      }
+    }
+  }
+  
+
   //Event handler to clear local data and reset state
   const logOut = (event) => {
     window.localStorage.clear();
@@ -143,7 +173,7 @@ const App = () => {
       {blogs
       .sort(({ likes: previousLikes }, { likes: currentLikes }) => currentLikes - previousLikes)
       .map(blog =>
-        <Blog key={blog.id} blog={blog} updateLikesHandler={updateLikesHandler}/>
+        <Blog key={blog.id} blog={blog} loggedInUser={user} updateLikesHandler={updateLikesHandler} deleteBlogHandler={deleteBlogHandler}/>
       )}
     </div>
   );
