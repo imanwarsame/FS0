@@ -1,15 +1,16 @@
-import "../index.css";
+import React from 'react';
+import '../index.css';
 
 const Notification = ({ message, notificationType = 'notification' }) => {
-    if (message === null) {
-      return null
-    }
-  
-    return (
-      <div className={notificationType}>
-        {message}
-      </div>
-    )
-}
+	if (message === null) {
+		return null;
+	}
 
-export default Notification
+	return (
+		<div className={notificationType}>
+			{message}
+		</div>
+	);
+};
+
+export default Notification;
