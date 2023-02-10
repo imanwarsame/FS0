@@ -39,11 +39,11 @@ const Blog = ({ blog, loggedInUser, updateLikesHandler, deleteBlogHandler }) => 
 	};
 
 	return (
-		<div style={blogStyle}>
-			<div style={hideWhenDetailsVisible}>
+		<div className='blog' style={blogStyle}>
+			<div className='collapsed_blog' style={hideWhenDetailsVisible}>
 				{blog.title} {blog.author} <button onClick={() => setShowDetails(true)}>View</button>
 			</div>
-			<div style={showWhenDetailsVisible}>
+			<div className='expanded_blog' style={showWhenDetailsVisible}>
 				<div>
 					{blog.title} {blog.author} <button onClick={() => setShowDetails(false)}>Hide</button>
 				</div>
