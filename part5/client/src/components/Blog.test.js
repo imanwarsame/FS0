@@ -53,7 +53,7 @@ test('renders content when button clicked', async() => {
 	expect(div).toHaveTextContent('www.testurl.com');
 });
 
-test('clicking the button twice calls event handler twice', async () => {
+test('clicking the like button twice calls event handler twice', async () => {
 	//Mock event handler
 	const mockHandler = jest.fn();
 
