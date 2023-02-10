@@ -41,7 +41,7 @@ test('renders content', () => {
 test('renders content when button clicked', async() => {
 	const { container } = render(<Blog blog={newBlog} loggedInUser={loggedInUser} />);
 
-	//Click button
+	//Click view button to expand blog
 	const user = userEvent.setup();
 	const button = screen.getByText('View');
 	await user.click(button);
@@ -51,4 +51,24 @@ test('renders content when button clicked', async() => {
 	expect(div).not.toHaveStyle('display: none');
 	expect(div).toHaveTextContent('Likes 3');
 	expect(div).toHaveTextContent('www.testurl.com');
+});
+
+test('clicking the button twice calls event handler twice', async () => {
+	//Mock event handler
+	const mockHandler = jest.fn();
+
+	render(<Blog blog={newBlog} loggedInUser={loggedInUser} updateLikesHandler={mockHandler}/>);
+
+	//Click view button to expand blog
+	const user = userEvent.setup(); //Session started to interact with the rendered component
+	let button = screen.getByText('View');
+	await user.click(button);
+
+	//Find like button and click it twice
+	button = screen.getByText('Like');
+	await user.click(button); //User clicks button
+	await user.click(button); //User clicks button
+
+	//Verifies that the mock function has been called twice
+	expect(mockHandler.mock.calls).toHaveLength(2);
 });
