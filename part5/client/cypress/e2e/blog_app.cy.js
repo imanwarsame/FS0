@@ -70,6 +70,26 @@ describe('Blog app', function() {
 			cy.contains('Matti Luukkainen');
 
 		});
+
+
+
+		it('A blog can be liked', function() {
+			cy.contains('New blog').click();
+			cy.get('input[placeholder="Blog title..."]').type('Test title');
+			cy.get('input[placeholder="Blog author..."]').type('Test author');
+			cy.get('input[placeholder="Blog URL..."]').type('www.testurl.com');
+			cy.get('#add-blog').click();
+
+			cy.contains('View').click();
+
+			cy.contains('Like').click();
+
+			cy.get('.notification').contains('Test title now has 1 likes!')
+				.and('have.css', 'color', 'rgb(0, 128, 0)')
+				.and('have.css', 'border-style', 'solid');
+			cy.contains('Likes 1');
+		});
+
 	});
 
 
