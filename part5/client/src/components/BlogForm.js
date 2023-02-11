@@ -53,7 +53,7 @@ const BlogForm = ({ addBlogHandler }) => {
         URL: <input value={newURL} onChange={handleURLChange} placeholder={'Blog URL...'}/>
 			</div>
 			<div>
-				<button type="submit">add</button>
+				<button id ="add-blog" type="submit">add</button>
 			</div>
 		</form>
 	);
