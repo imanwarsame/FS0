@@ -52,7 +52,7 @@ const Blog = ({ blog, loggedInUser, updateLikesHandler, deleteBlogHandler }) => 
           Likes {blog.likes} <button onClick={updateLikes}>Like</button>
 				</div>
 				<div>
-					{blog.user.name} <button style={deleteButtonVisible} onClick={deleteBlog}>Delete</button>
+					{blog.user.name} <button id="delete-blog" style={deleteButtonVisible} onClick={deleteBlog}>Delete</button>
 				</div>
 			</div>
 		</div>

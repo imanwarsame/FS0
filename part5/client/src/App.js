@@ -192,7 +192,7 @@ const App = () => {
 			{user &&
         <div>
         	<div>
-        		{user.name} logged in <button onClick={() => logOut()}>log out</button>
+        		{user.name} logged in <button id="logout-button" onClick={() => logOut()}>log out</button>
         	</div>
 
         	<Togglable buttonLabel='New blog'>

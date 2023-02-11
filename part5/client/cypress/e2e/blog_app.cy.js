@@ -91,7 +91,7 @@ describe('Blog app', function() {
 		});
 
 
-		it.only('A blog can be deleted', function() {
+		it('A blog can be deleted', function() {
 			cy.contains('New blog').click();
 			cy.get('input[placeholder="Blog title..."]').type('Test title');
 			cy.get('input[placeholder="Blog author..."]').type('Test author');
@@ -106,6 +106,36 @@ describe('Blog app', function() {
 			cy.get('.notification').contains('Test title by Test author has been deleted!')
 				.and('have.css', 'color', 'rgb(0, 128, 0)')
 				.and('have.css', 'border-style', 'solid');
+		});
+
+
+		it.only('Other users cannot see the delete button', function() {
+			cy.contains('New blog').click();
+			cy.get('input[placeholder="Blog title..."]').type('Test title');
+			cy.get('input[placeholder="Blog author..."]').type('Test author');
+			cy.get('input[placeholder="Blog URL..."]').type('www.testurl.com');
+			cy.get('#add-blog').click();
+
+			cy.get('#logout-button').click();
+
+			//Add new user to DB
+			const user = {
+				name: 'Molly Gallagher',
+				username: 'mgallagher',
+				password: 'Ahxaenahn6ee'
+			};
+			cy.request('POST', 'http://localhost:3003/api/users/', user);
+
+			cy.request('POST', 'http://localhost:3003/api/login', {
+				username: 'mgallagher', password: 'Ahxaenahn6ee'
+			}).then(response => {
+				localStorage.setItem('loggedBlogappUser', JSON.stringify(response.body));
+				cy.visit('http://localhost:3000');
+			});
+
+			cy.contains('View').click();
+
+			cy.get('#delete-blog').should('not.be.visible');
 		});
 
 	});
