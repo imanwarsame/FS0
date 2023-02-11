@@ -90,9 +90,24 @@ describe('Blog app', function() {
 			cy.contains('Likes 1');
 		});
 
+
+		it.only('A blog can be deleted', function() {
+			cy.contains('New blog').click();
+			cy.get('input[placeholder="Blog title..."]').type('Test title');
+			cy.get('input[placeholder="Blog author..."]').type('Test author');
+			cy.get('input[placeholder="Blog URL..."]').type('www.testurl.com');
+			cy.get('#add-blog').click();
+
+			cy.contains('View').click();
+
+			cy.contains('Delete').click();
+
+			cy.contains('Test title Test author').should('not.exist');
+			cy.get('.notification').contains('Test title by Test author has been deleted!')
+				.and('have.css', 'color', 'rgb(0, 128, 0)')
+				.and('have.css', 'border-style', 'solid');
+		});
+
 	});
-
-
-
 
 });
