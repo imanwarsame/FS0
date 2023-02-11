@@ -109,7 +109,9 @@ describe('Blog app', function() {
 		});
 
 
-		it.only('Other users cannot see the delete button', function() {
+
+
+		it('Other users cannot see the delete button', function() {
 			cy.contains('New blog').click();
 			cy.get('input[placeholder="Blog title..."]').type('Test title');
 			cy.get('input[placeholder="Blog author..."]').type('Test author');
@@ -136,6 +138,29 @@ describe('Blog app', function() {
 			cy.contains('View').click();
 
 			cy.get('#delete-blog').should('not.be.visible');
+		});
+
+
+
+		it.only('Blogs are ordered by likes', function() {
+			cy.contains('New blog').click();
+			cy.get('input[placeholder="Blog title..."]').type('The title with the most likes');
+			cy.get('input[placeholder="Blog author..."]').type('Test author');
+			cy.get('input[placeholder="Blog URL..."]').type('www.testurl.com');
+			cy.get('#add-blog').click();
+
+			cy.contains('View').click();
+
+			cy.contains('Like').click();
+
+
+			cy.get('input[placeholder="Blog title..."]').type('The title with the second most likes');
+			cy.get('input[placeholder="Blog author..."]').type('Test author');
+			cy.get('input[placeholder="Blog URL..."]').type('www.testurl.com');
+			cy.get('#add-blog').click();
+
+			cy.get('.blog').eq(0).should('contain', 'The title with the most likes');
+			cy.get('.blog').eq(1).should('contain', 'The title with the second most likes');
 		});
 
 	});
