@@ -33,6 +33,14 @@ app.use('/api/login', loginRouter);
 app.use('/api/blogs', blogsRouter);
 app.use('/api/users', usersRouter);
 
+/* A conditional statement that checks if the environment is set to test. If it is, it will use the
+testing router. */
+if (process.env.NODE_ENV === 'test') {
+	console.log('Test mode active');
+	const testingRouter = require('./controllers/testRouter');
+	app.use('/api/testing', testingRouter);
+}
+
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
