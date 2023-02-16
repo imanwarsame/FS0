@@ -1,12 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const filterChange = filter => {
-	return {
-	  type: 'SET_FILTER',
-	  payload: filter,
-	}
-}
-
 const initialState = ''
 
 const filterSlice = createSlice({
