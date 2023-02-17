@@ -16,9 +16,10 @@ const AnecdoteList = () => {
   })
 
   const vote = (id) => {
-    dispatch(upvoteAnecdote(id));
-
     const upvotedAnecdote = JSON.parse(JSON.stringify(anecdotes)).find(anecdote => anecdote.id === id)
+
+    dispatch(upvoteAnecdote(id, upvotedAnecdote));
+
 
     dispatch(addNotification(`You voted for '${upvotedAnecdote.content}'`)) //Success notification
     setTimeout(() => {

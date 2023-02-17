@@ -1,17 +1,22 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3001/anecdotes'
+const baseURL = 'http://localhost:3001/anecdotes'
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl)
+  const response = await axios.get(baseURL)
   return response.data
 }
 
 const createNew = async (content) => {
   const object = { content, votes: 0 }
   console.log(content);
-  const response = await axios.post(baseUrl, object)
+  const response = await axios.post(baseURL, object)
   return response.data
 }
 
-export default { getAll, createNew }
+const update = async (id, newObject) => {
+  const response = await axios.put(`${baseURL}/${id}`, newObject)
+  return response.data
+}
+
+export default { getAll, createNew, update }
