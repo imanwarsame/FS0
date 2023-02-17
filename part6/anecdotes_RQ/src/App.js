@@ -12,7 +12,8 @@ const App = () => {
   const result = useQuery(
     'anecdotes', getAnecdotes, 
     {
-      retry: 1
+      retry: 1,
+      refetchOnWindowFocus: false
     }
   );
   console.log(result);
