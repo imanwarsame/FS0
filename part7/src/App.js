@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   BrowserRouter as Router,
-  Routes, Route, Link
+  Routes, Route, Link, useNavigate
 } from 'react-router-dom';
 import AnecdoteList from './Components/AnecdoteList';
 import CreateAnecdote from './Components/CreateAnecdote';
@@ -11,6 +11,8 @@ import Anecdote from './Components/Anecdote';
 
 
 const App = () => {
+  const [notification, setNotification] = useState('')
+
   const [anecdotes, setAnecdotes] = useState([
     {
       content: 'If it hurts, do it more often',
@@ -32,11 +34,14 @@ const App = () => {
     paddingRight: 5
   }
 
-  const [notification, setNotification] = useState('')
-
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    
+    setNotification(`A new anecdote ${anecdote.content} created!`) //Success notification
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000);
   }
 
   const anecdoteById = (id) => {
@@ -62,6 +67,8 @@ const App = () => {
         <Link style={padding} to="/create">Create new</Link>
         <Link style={padding} to="/about">About</Link>
         </div>
+
+        <div>{notification}</div>
 
         <Routes>
           <Route path="/" element={<AnecdoteList anecdotes={anecdotes}/>}/>
