@@ -6,6 +6,7 @@ import {
 import AnecdoteList from './Components/AnecdoteList';
 import CreateAnecdote from './Components/CreateAnecdote';
 import About from './Components/About';
+import Anecdote from './Components/Anecdote';
 
 
 
@@ -22,7 +23,7 @@ const App = () => {
       content: 'Premature optimization is the root of all evil',
       author: 'Donald Knuth',
       info: 'http://wiki.c2.com/?PrematureOptimization',
-      votes: 0,
+      votes: 7,
       id: 2
     }
   ])
@@ -64,6 +65,7 @@ const App = () => {
 
         <Routes>
           <Route path="/" element={<AnecdoteList anecdotes={anecdotes}/>}/>
+          <Route path="/anecdotes/:id" element={<Anecdote anecdotes={anecdotes} />} />
           <Route path="/create" element={<CreateAnecdote addNew={addNew}/>}/>
           <Route path="/about" element={<About/>}/>
         </Routes>
