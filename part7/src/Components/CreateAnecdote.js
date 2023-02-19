@@ -19,7 +19,16 @@ const CreateAnecdote = (props) => {
 	  })
 	  navigate('/')
 	}
-  
+
+	const clearInputs = (e) => {
+		e.preventDefault();
+
+		content.reset();
+		author.reset();
+		info.reset();
+	}
+	  
+	  
 	return (
 	  <div>
 		<h2>create a new anecdote</h2>
@@ -37,6 +46,7 @@ const CreateAnecdote = (props) => {
 			<input {...info}/>
 		  </div>
 		  <button>create</button>
+		  <button onClick={clearInputs}>clear</button>
 		</form>
 	  </div>
 	)
