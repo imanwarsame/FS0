@@ -36,6 +36,7 @@ const App = () => {
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
+    console.log(anecdote);
     setAnecdotes(anecdotes.concat(anecdote))
     
     setNotification(`A new anecdote ${anecdote.content} created!`) //Success notification
