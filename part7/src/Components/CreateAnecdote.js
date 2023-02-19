@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 const CreateAnecdote = (props) => {
 	const navigate = useNavigate()
 
-	const content = useField('text')
-	const author = useField('text')
-	const info = useField('text')
-  
+	const { reset: resetContent, ...content } = useField('text');
+	const { reset: resetAuthor, ...author } = useField('text');
+	const { reset: resetInfo, ...info } = useField('text');
+
 	const handleSubmit = (e) => {
 	  e.preventDefault()
 
@@ -23,9 +23,9 @@ const CreateAnecdote = (props) => {
 	const clearInputs = (e) => {
 		e.preventDefault();
 
-		content.reset();
-		author.reset();
-		info.reset();
+		resetContent();
+		resetAuthor();
+		resetInfo();
 	}
 	  
 	  
