@@ -107,7 +107,7 @@ const typeDefs = `
     bookCount: Int!
     authorCount: Int!
     allAuthors: [Author!]!
-    allBooks(author: String): [Book]
+    allBooks(author: String, genre: String): [Book]
   }
 `
 
@@ -117,11 +117,21 @@ const resolvers = {
     authorCount: () => authors.length,
     allAuthors: () => authors,
     allBooks: (root, args) => {
-      if (args.author == undefined) {
+      if (args.author === undefined && args.genre === undefined) {
         return books;
       }
 
-      return books.filter(p => p.author === args.author);
+      if (args.author !== undefined && args.genre !== undefined) {
+        return books.filter(p => p.author === args.author && p.genres.includes(args.genre.toLowerCase()));
+      }
+
+      if (args.author !== undefined) {
+        return books.filter(p => p.author === args.author);
+      }
+
+      if (args.genre !== undefined) {
+        return books.filter(p => p.genres.includes(args.genre.toLowerCase()));
+      }
     }
   },
   //Default resolver no longer sufficient since we need to get the number of books
