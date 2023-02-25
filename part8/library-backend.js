@@ -1,5 +1,6 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
+const { v1: uuid } = require('uuid')
 
 let authors = [
   {
@@ -109,6 +110,15 @@ const typeDefs = `
     allAuthors: [Author!]!
     allBooks(author: String, genre: String): [Book]
   }
+
+  type Mutation {
+    addBook(
+      title: String!
+      author: String
+      published: Int!
+      genres: [String!]!
+    ): Book
+  }
 `
 
 const resolvers = {
@@ -122,15 +132,15 @@ const resolvers = {
       }
 
       if (args.author !== undefined && args.genre !== undefined) {
-        return books.filter(p => p.author === args.author && p.genres.includes(args.genre.toLowerCase()));
+        return books.filter(i => i.author === args.author && i.genres.includes(args.genre.toLowerCase()));
       }
 
       if (args.author !== undefined) {
-        return books.filter(p => p.author === args.author);
+        return books.filter(i => i.author === args.author);
       }
 
       if (args.genre !== undefined) {
-        return books.filter(p => p.genres.includes(args.genre.toLowerCase()));
+        return books.filter(i => i.genres.includes(args.genre.toLowerCase()));
       }
     }
   },
@@ -140,6 +150,23 @@ const resolvers = {
     //We only need to include the property we want to change from the default
     //the rest of the properties will continue using their default values
     bookCount: (root) => books.filter(book => book.author === root.name).length,
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      const book = { ...args, id: uuid() };
+      books = books.concat(book);
+      if (authors.filter(i => i.name === args.author).length === 0) {
+        const newAuthor = {
+          name: args.author,
+          born: null,
+          id: uuid(),
+        }
+
+        authors = authors.concat(newAuthor)
+      }
+
+      return book;
+    }
   }
 }
 
