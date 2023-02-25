@@ -5,12 +5,16 @@
   "main": "library-backend.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node library-backend.js"
+    "start": "node library-backend.js",
+    "dev": "nodemon library-backend.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.4.0",
     "graphql": "^16.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
