@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { gql, useQuery, useMutation } from '@apollo/client'
+const { v1: uuid } = require('uuid')
 
 const ALL_AUTHORS = gql`
 query {
@@ -74,10 +75,11 @@ const Authors = (props) => {
       <form onSubmit={submit}>
         <div>
           name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
+          <select value={name} onChange={({ target }) => setName(target.value)}>
+            {authors.map(i =>
+              <option key={uuid()} value={i.name}>{i.name}</option>
+            )}
+          </select>
         </div>
         <div>
           born
