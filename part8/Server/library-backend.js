@@ -149,7 +149,7 @@ const resolvers = {
     }
   },
   //Default resolver no longer sufficient since we need to get the number of books
-  //each author has writte
+  //each author has written
   Author: {
     //We only need to include the property we want to change from the default
     //the rest of the properties will continue using their default values
