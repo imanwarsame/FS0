@@ -24,8 +24,6 @@ const Authors = (props) => {
 
   authors = authors.concat(result.data.allAuthors);
 
-  console.log(authors);
-
   return (
     <div>
       <h2>authors</h2>
