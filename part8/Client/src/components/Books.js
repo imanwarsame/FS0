@@ -25,8 +25,6 @@ const Books = (props) => {
 
   books = books.concat(result.data.allBooks);
 
-  console.log(books);
-
   return (
     <div>
       <h2>books</h2>
